@@ -1,75 +1,58 @@
-/* General Body Styles */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: coral; /* Light background color */
-}
-
-/* Card Styles */
-.card {
-  transition: transform 0.2s; /* Animation for hover effect */
-}
-
-.card:hover {
-  transform: scale(1.05); /* Scale up on hover */
-}
-
 /* Navbar Styles */
 .navbar {
-  background-color: #000000; /* Change to your preferred color */
-}
-
-.navbar .nav-link {
-  color: rgb(235, 32, 32) !important; /* Change link color */
-}
-
-.navbar .nav-link:hover {
-  color: coral !important; /* Change hover color */
-}
-
-.navbar-brand {
-  font-weight: 900; /* Make the brand name bold */
-}
-
-/* Product List Styles */
-.product-list {
+  background-color: #ffe8dc;
+  padding: 1rem 2rem;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 20px;
+  justify-content: space-between;  /* This will space out the left and right sections */
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* Product Card Styles */
-.product {
-  background: #fff;
-  border: 1px solid #ddd;
+.nav-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff7043;
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* Move login and signup to the right */
+.navbar-nav.ms-auto {
+  margin-left: auto;  /* This ensures the authentication items are pushed to the right */
+}
+
+/* Navbar links styling */
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.logout-btn {
+  padding: 0.4rem 0.8rem;
+  background-color: #ff7043;
+  border: none;
+  color: white;
   border-radius: 5px;
-  padding: 10px;
-  margin: 10px;
-  width: 100%; /* Make it responsive */
-  max-width: 300px; /* Set a max width for larger screens */
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  cursor: pointer;
 }
 
-/* Cart Styles */
-.cart {
-  padding: 20px;
-}
-
-.cart-item {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .product-list {
-      justify-content: center; /* Center products on smaller screens */
-  }
-
-  .product {
-      width: 90%; /* Make products take more width on small screens */
-  }
+.nav-user {
+  font-weight: bold;
+  color: #555;
 }

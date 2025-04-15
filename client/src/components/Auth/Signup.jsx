@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './Auth.css'; // make sure this file exists
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -11,24 +12,66 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', { name, surname, phone, email, password });
+      await axios.post('http://localhost:5000/api/auth/signup', {
+        name,
+        surname,
+        phone,
+        email,
+        password,
+      });
       alert('Signup successful!');
     } catch (error) {
       console.error(error);
+      alert('Signup failed. Please try again.');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Signup</h2>
-      <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} required />
-      <input type="text" placeholder="Surname" onChange={(e) => setSurname(e.target.value)} required />
-      <input type="text" placeholder="Phone" onChange={(e) => setPhone(e.target.value)} required />
-      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required/>
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
-            <button type="submit">Signup</button>
-          </form>
-        );
-      };
-      
-      export default Signup;
+    <div className="auth-container">
+      <div className="auth-box">
+        <h2>Sign Up</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="First Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="/login">Log in</a></p>
+      </div>
+    </div>
+  );
+};
+
+export default Signup;

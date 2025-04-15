@@ -5,10 +5,10 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
-import Cart from './components/Cart';
+import CartPage from './pages/Cartpage'; 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './styles.css';
-
+import axios from 'axios'; 
 
 const App = () => {
   const { user } = useAuth();
@@ -39,7 +39,7 @@ const App = () => {
         <Route path="/products" element={<Products addToCart={addToCart} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/cart" element={<Cart userId={user ? user.id : null} />} />
+        <Route path="/cart" element={<CartPage userId={user ? user.id : null} />} />
       </Routes>
     </Router>
   );

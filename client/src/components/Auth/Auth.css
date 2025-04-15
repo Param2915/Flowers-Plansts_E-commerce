@@ -1,0 +1,108 @@
+/* Auth Container */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 246, 240, 0.8); /* Light coral with opacity */
+    background-image: url('https://images.unsplash.com/photo-1515923019249-6b544314450f?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Example floral image URL */
+    background-size: cover;
+    background-position: center;
+    font-family: 'Segoe UI', sans-serif;
+    backdrop-filter: blur(10px); /* To add blur effect to the background */
+  }
+  
+  /* Auth Box */
+  .auth-box {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    padding: 2.5rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    backdrop-filter: blur(10px); /* Optional: gives a nice blurred background effect */
+  }
+  
+  /* Header */
+  .auth-box h2 {
+    margin-bottom: 1.5rem;
+    color: #2e2e2e;
+    font-family: 'Cursive', sans-serif; /* To add a more natural, floral touch */
+    font-size: 2rem;
+  }
+  
+  /* Form */
+  .auth-box form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Input Fields */
+  .auth-box input {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border 0.3s ease-in-out;
+  }
+  
+  .auth-box input:focus {
+    border-color: #ff7043; /* Highlight on focus with a floral color */
+    outline: none;
+  }
+  
+  /* Input Field Icons */
+  .auth-box input[type="text"], .auth-box input[type="email"], .auth-box input[type="password"] {
+    background: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/leaf.svg') no-repeat scroll 10px center; /* Flower/plant icon URL */
+    padding-left: 40px; /* Adjust padding for icon */
+    background-size: 20px 20px; /* Adjust the size of the icon */
+  }
+  
+  /* Button */
+  .auth-box button {
+    padding: 0.75rem;
+    border: none;
+    background-color: #ff8c66;
+    color: white;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 1rem;
+  }
+  
+  .auth-box button:hover {
+    background-color: #ff7043;
+  }
+  
+  /* Text */
+  .auth-box p {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  /* Link */
+  .auth-box a {
+    color: #ff7043;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .auth-box a:hover {
+    color: #d45d29; /* Slightly darker shade for hover effect */
+  }
+  
+  /* Additional styling for better UI */
+  .auth-box input::placeholder {
+    color: #6c757d; /* Grey placeholder text */
+    font-style: italic;
+  }
+  
+  .auth-box button:disabled {
+    background-color: #f0a6a1; /* Light color to indicate disabled state */
+    cursor: not-allowed;
+  }
+  
