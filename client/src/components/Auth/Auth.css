@@ -106,3 +106,54 @@
     cursor: not-allowed;
   }
   
+
+
+
+
+
+
+
+
+
+
+  .forgot-link {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 10px;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .modal-content input {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .close-btn {
+    margin-top: 1rem;
+    background: #ccc;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  

@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
+
+
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const nodemailer = require("nodemailer");
@@ -9,7 +11,8 @@ const nodemailer = require("nodemailer");
 const UserAuth = require("./routes/UserRoute");
 const ProductRoute = require("./routes/ProductRoute");
 
-require("dotenv").config();
+require('dotenv').config({ path: './config/.env' });
+
 
 app.use(
   cors({
@@ -23,6 +26,18 @@ app.use(cookieParser());
 
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+
+
+
+// const EmailConfig = require("./models/EmailConfig");
+
+// EmailConfig.sync({ alter: true }).then(() => {
+//   console.log("✅ EmailConfig table synced");
+// });
+
+
+
 
 // Routes
 app.use("/api/auth", UserAuth);       // Login, register, reset password, etc.
