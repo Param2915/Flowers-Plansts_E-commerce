@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/User'); // Ensure your User model is correctly imported
+const User = require('../models/User'); 
 const jwt = require('jsonwebtoken'); // For generating JWT
 
 exports.login = async (req, res) => {
@@ -20,7 +20,6 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate JWT token (you might already be doing this)
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,

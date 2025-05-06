@@ -1,28 +1,3 @@
-// const mysql = require("mysql2");
-
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "2005", //database password,
-//   database: "f&p_ecom", // database name
-// });
-
-// connection.connect((err) => {
-//   if (err) {
-//     console.log("Error While Connecting Database");
-//     return;
-//   }
-//   console.log("Connected to Database successfully");
-// });
-
-
-// module.exports = connection;
-
-
-
-// db.js
-
-
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize("f&p_ecom", "root", "2005", {

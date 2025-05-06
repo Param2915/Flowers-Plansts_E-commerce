@@ -9,6 +9,9 @@ import CartPage from './pages/Cartpage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './styles.css';
 import axios from 'axios'; 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   const { user } = useAuth();
