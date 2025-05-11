@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Cartpage.css';
 
-const CartPage = ({ userId }) => {
+const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Assuming you have the userId from your authentication state (localStorage, context, etc.)
+  const userId = localStorage.getItem('userId');  // Ensure this is set after login
 
   useEffect(() => {
     if (userId) {
@@ -14,35 +19,56 @@ const CartPage = ({ userId }) => {
 
   const fetchCartItems = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/products/cart/${userId}`);
+      setLoading(true);
+      const res = await axios.get(`http://localhost:5000/api/auth/getshoppingcart`, {
+        params: { user_id: userId },
+      });
       setCartItems(res.data);
+
+      // Calculate total amount
       const totalAmount = res.data.reduce((sum, item) => sum + item.price * item.quantity, 0);
       setTotal(totalAmount);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
+      setError('Error fetching cart items.');
       console.error('Error fetching cart items:', error);
     }
   };
 
   const removeItem = async (itemId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/products/cart/item/${itemId}`);
-      fetchCartItems();
+      await axios.delete(`http://localhost:5000/api/auth/deleteshoppingcart`, {
+        data: { shoppingCartId: itemId, user_id: userId },
+      });
+      fetchCartItems();  // Refresh the cart after removing the item
     } catch (error) {
       console.error('Error removing item:', error);
     }
   };
 
   const updateQuantity = async (itemId, newQuantity) => {
-    if (newQuantity < 1) return;
+    if (newQuantity < 1) return;  // Prevent negative quantity
+
     try {
-      await axios.put(`http://localhost:5000/api/products/cart/item/${itemId}`, {
+      await axios.put(`http://localhost:5000/api/auth/deleteshoppingcart`, {
+        shoppingCartId: itemId,
+        user_id: userId,
         quantity: newQuantity,
       });
-      fetchCartItems();
+      fetchCartItems();  // Refresh the cart after updating quantity
     } catch (error) {
       console.error('Error updating quantity:', error);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="cart-container">
@@ -54,9 +80,9 @@ const CartPage = ({ userId }) => {
           <div className="cart-items">
             {cartItems.map((item) => (
               <div className="cart-item" key={item.id}>
-                <img src={item.image || 'https://source.unsplash.com/100x100/?flower'} alt={item.arrangement} />
+                <img src={item.Product.image || 'https://source.unsplash.com/100x100/?flower'} alt={item.Product.arrangement} />
                 <div className="item-details">
-                  <h4>{item.arrangement}</h4>
+                  <h4>{item.Product.arrangement}</h4>
                   <p>Price: ${item.price}</p>
                   <div className="quantity-controls">
                     <button

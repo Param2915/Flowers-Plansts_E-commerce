@@ -1,8 +1,8 @@
 import React from 'react';
 import ProductList from '../components/ProductList';
-import './Home.css'; 
+import './Home.css';
 
-const Home = ({ products }) => {
+const Home = ({ products, addToCart }) => {
   return (
     <div className="home-container">
       <header className="hero">
@@ -12,7 +12,7 @@ const Home = ({ products }) => {
 
       <section className="products-section">
         <h2>Featured Products</h2>
-        <ProductList products={products} addToCart={(product) => console.log('Add to cart:', product)} />
+        <ProductList products={products} addToCart={addToCart} />
       </section>
 
       <footer className="footer">
