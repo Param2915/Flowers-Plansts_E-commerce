@@ -20,7 +20,7 @@ const {
   resetPassword,
 } = require("../controller/PasswordController");
 
-const { AuthMiddleware, isAdmin } = require("../middleware/AuthMiddleware");
+const { verifyToken, requireAdmin } = require("../middleware/AuthMiddleware");  // updated imports
 
 // Auth Routes
 router.post("/signup", signupUser);
@@ -28,7 +28,7 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
 // Current user (admin-only)
-router.get("/getcurrent", AuthMiddleware, isAdmin, getCurrentUser);
+router.get("/getcurrent", verifyToken, requireAdmin, getCurrentUser);
 
 // Password reset routes
 router.post("/forgotPassword", forgotPassword);
@@ -36,13 +36,13 @@ router.post("/verifyOTP", verifyOTP);
 router.post("/resetPassword", resetPassword);
 
 // Shopping Cart Routes
-router.post("/addproduct", AuthMiddleware, addProductToCart);
-router.get("/getshoppingcart", AuthMiddleware, getShoppingCart);
-router.get("/getitemnumber", AuthMiddleware, getItemNumber);
-router.delete("/deleteshoppingcart", AuthMiddleware, deleteShoppingCart);
+router.post("/addproduct", verifyToken, addProductToCart);
+router.get("/getshoppingcart", verifyToken, getShoppingCart);
+router.get("/getitemnumber", verifyToken, getItemNumber);
+router.delete("/deleteshoppingcart", verifyToken, deleteShoppingCart);
 
 // Favorites Routes
-router.post("/addtofavorites", AuthMiddleware, addToFavorites);
-router.get("/getfavorites", AuthMiddleware, getFavorites);
+router.post("/addtofavorites", verifyToken, addToFavorites);
+router.get("/getfavorites", verifyToken, getFavorites);
 
 module.exports = router;

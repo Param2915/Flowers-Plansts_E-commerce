@@ -8,7 +8,10 @@ const PasswordResetToken = require("../models/PasswordResetToken");
 dotenv.config();
 
 // Use a static email and password instead of DB config (adjust this if needed)
-// const ADMIN_EMAIL = "inbox.param05@gmail.com";
+require("dotenv").config();
+
+const adminEmail = process.env.ADMIN_EMAIL;
+
 // const ADMIN_PASSWORD = "qdsf iyas jjbn aqvy"; // Replace with your Gmail App Password
 
 const transporter = nodemailer.createTransport({
