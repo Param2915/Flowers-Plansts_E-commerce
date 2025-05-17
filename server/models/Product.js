@@ -1,35 +1,45 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const Product = sequelize.define("Product", {
+const Product = sequelize.define('Product', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: DataTypes.STRING(255),
+    allowNull: false
   },
   description: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT
   },
   price: {
     type: DataTypes.DECIMAL(10, 2),
-    allowNull: false,
+    allowNull: false
   },
   arrangement: {
-    type: DataTypes.ENUM("vase", "bouquet", "basket", "box", "single stick"),
+    type: DataTypes.ENUM('vase', 'bouquet', 'basket', 'box', 'single stick'),
+    allowNull: true
   },
   color: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(50)
   },
   type: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: DataTypes.STRING(100),
+    allowNull: false
   },
   image: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
+    allowNull: true
   },
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  }
 }, {
-  timestamps: true,
-  createdAt: "created_at",
-  updatedAt: false
+  tableName: 'products',
+  timestamps: false
 });
 
 module.exports = Product;

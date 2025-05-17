@@ -33,6 +33,9 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/cart">Cart</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/favorite">Favorite</Link>
+            </li>
           </ul>
 
           {/* Right-aligned user/auth section */}
