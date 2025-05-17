@@ -33,8 +33,9 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/cart">Cart</Link>
             </li>
+            {/* 👉 Admin Panel link */}
             <li className="nav-item">
-              <Link className="nav-link" to="/favorite">Favorite</Link>
+              <Link className="nav-link text-danger fw-bold" to="/admin/login">Admin Panel</Link>
             </li>
           </ul>
 
