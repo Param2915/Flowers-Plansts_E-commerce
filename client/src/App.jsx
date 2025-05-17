@@ -7,12 +7,20 @@ import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
 import CartPage from './pages/Cartpage';
 import About from './pages/About';
-import Contact from './pages/Contact';  // ✅ Added Contact page import
+import Contact from './pages/Contact';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './styles.css';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+// ✅ Import Admin Components
+import AdminLogin from './components/Admin/AdminLogin';
+import Dashboard from './components/Admin/Dashboard';
+import AddProduct from './components/Admin/AddProduct';
+import AllProducts from './components/Admin/AllProducts';
+import EditProduct from './components/Admin/EditProduct';
+import AdminRoute from './components/Admin/AdminRoute';
 
 const App = () => {
   const { user } = useAuth();
@@ -56,13 +64,21 @@ const App = () => {
       <Navbar />
       <ToastContainer />
       <Routes>
+        {/* 🌸 User Side Routes */}
         <Route path="/" element={<Home products={products} addToCart={addToCart} />} />
         <Route path="/products" element={<Products addToCart={addToCart} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/cart" element={<CartPage userId={user ? user.id : null} />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />  {/* ✅ Contact route added */}
+        <Route path="/contact" element={<Contact />} />
+
+        {/* 🔐 Admin Panel Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+        <Route path="/admin/add-product" element={<AdminRoute><AddProduct /></AdminRoute>} />
+        <Route path="/admin/products" element={<AdminRoute><AllProducts /></AdminRoute>} />
+        <Route path="/admin/edit-product/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
       </Routes>
     </Router>
   );
