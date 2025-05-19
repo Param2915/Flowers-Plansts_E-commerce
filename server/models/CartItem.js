@@ -1,9 +1,9 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
-const User = require('./User');
-const Product = require('./Product');
+const User = require("./User");
+const Product = require("./Product");
 
-const CartItem = sequelize.define('CartItem', {
+const CartItem = sequelize.define("CartItem", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -14,7 +14,7 @@ const CartItem = sequelize.define('CartItem', {
     allowNull: false,
     references: {
       model: User,
-      key: 'id'
+      key: "id"
     }
   },
   product_id: {
@@ -22,11 +22,11 @@ const CartItem = sequelize.define('CartItem', {
     allowNull: false,
     references: {
       model: Product,
-      key: 'id'
+      key: "id"
     }
   },
   arrangement: {
-    type: DataTypes.ENUM('vase', 'bouquet', 'basket', 'box', 'single stick'),
+    type: DataTypes.ENUM("vase", "bouquet", "basket", "box", "single stick"),
     allowNull: true
   },
   price: {
@@ -43,12 +43,12 @@ const CartItem = sequelize.define('CartItem', {
     defaultValue: DataTypes.NOW
   }
 }, {
-  tableName: 'shopping_cart_items',
+  tableName: "shopping_cart_items",
   timestamps: false
 });
 
 // Define associations
-CartItem.belongsTo(User, { foreignKey: 'user_id' });
-CartItem.belongsTo(Product, { foreignKey: 'product_id' });
+CartItem.belongsTo(User, { foreignKey: "user_id" });
+CartItem.belongsTo(Product, { foreignKey: "product_id" });
 
 module.exports = CartItem;

@@ -1,4 +1,3 @@
-// server/routes/adminRoutes.js
 const express = require("express");
 const router = express.Router();
 
@@ -18,23 +17,52 @@ router.get(
   requireAdmin,
   AdminController.getDashboard
 );
+
 router.get(
   "/users",
   verifyToken,
   requireAdmin,
   AdminController.getAllUsers
 );
+
+// Add Product
 router.post(
   "/add-product",
   verifyToken,
   requireAdmin,
   AdminController.addProduct
 );
+
+// Update Product
+router.put(
+  "/update-product/:id",
+  verifyToken,
+  requireAdmin,
+  AdminController.updateProduct
+);
+
+// Delete Product
 router.delete(
   "/delete-product/:id",
   verifyToken,
   requireAdmin,
   AdminController.deleteProduct
+);
+
+// Get Products by Type (fixed: make sure AdminController has this method)
+router.get(
+  "/products-by-type/:type",
+  verifyToken,
+  requireAdmin,
+  AdminController.getProductsByType
+);
+
+// Get Overall Product Sales
+router.get(
+  "/product-sales",
+  verifyToken,
+  requireAdmin,
+  AdminController.getProductSales
 );
 
 module.exports = router;
