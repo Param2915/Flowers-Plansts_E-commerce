@@ -16,6 +16,12 @@ const {
 } = require("../controller/UserController");
 
 const {
+  login: loginUser,
+  logout: logoutUser,
+  getCurrentUser,
+} = require("../controller/authController");
+
+const {
   forgotPassword,
   verifyOTP,
   resetPassword,

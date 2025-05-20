@@ -1,9 +1,10 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAdmin } from '../../context/AdminContext';
 
 const AdminRoute = ({ children }) => {
-  const token = localStorage.getItem('adminToken');
-  return token ? children : <Navigate to="/admin/login" />;
+  const { isAdmin } = useAdmin();
+  return isAdmin ? children : <Navigate to="/login" />;
 };
 
 export default AdminRoute;

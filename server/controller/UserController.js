@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Product = require("../models/Product");
 const CartItem = require("../models/CartItem");
@@ -15,13 +14,15 @@ const sequelize = require("../config/db");
 const signupUser = async (req, res) => {
   const { name, surname, phone, email, password } = req.body;
 
-  if (!name || !surname || !phone || !email || !password)
-    return res.status(400).json({ message: "Please provide all fields." });
+  if (!name || !surname || !phone || !email || !password) {
+    return res.status(400).json({ message: "Provide all fields" });
+  }
 
   try {
-    const exists = await User.findOne({ where: { email } });
-    if (exists)
-      return res.status(400).json({ message: "Email already registered." });
+    const userExists = await User.findOne({ where: { email } });
+    if (userExists) {
+      return res.status(400).json({ message: "User or email already exists" });
+    }
 
     const hashPW = await bcrypt.hash(password, 10);
     await User.create({ name, surname, phone, email, password: hashPW });
@@ -151,9 +152,19 @@ const addOrUpdateCartItem = async (req, res) => {
     }
     
     return res.status(500).json({ message: "Unable to update cart at this time." });
+// ADD PRODUCT TO CART
+const addProductToCart = async (req, res) => {
+  const { user_id, product_id, arrangement, price } = req.body;
+
+  try {
+    await ShoppingCartItem.create({ user_id, product_id, arrangement, price });
+    return res.status(200).json({ message: "Product added to cart" });
+  } catch (error) {
+    return res.status(500).json({ message: "Database error", error });
   }
 };
 
+// GET SHOPPING CART
 const getShoppingCart = async (req, res) => {
   const user_id = req.user.id;
 
@@ -251,6 +262,7 @@ const clearCart = async (req, res) => {
   }
 };
 
+// GET ITEM COUNT
 const getItemNumber = async (req, res) => {
   try {
     const count = await CartItem.sum("quantity", {
@@ -282,6 +294,7 @@ const addToFavorites = async (req, res) => {
   }
 };
 
+// GET FAVORITES
 const getFavorites = async (req, res) => {
   const user_id = req.user.id;
 

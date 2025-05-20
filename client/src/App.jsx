@@ -79,11 +79,24 @@ const AppCore = () => {
         <Route path="/contact" element={<Contact />} />
 
         {/* 🔐 Admin Panel Routes */}
+<<<<<<< HEAD
+        {/* 🔐 Admin Panel Routes */}
+=======
+      {/* 🔐 Admin Panel Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
         <Route path="/admin/add-product" element={<AdminRoute><AddProduct /></AdminRoute>} />
         <Route path="/admin/products" element={<AdminRoute><AllProducts /></AdminRoute>} />
         <Route path="/admin/edit-product/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
+<<<<<<< HEAD
+        <Route path="/admin/delete-product/:id" element={<AdminRoute><DeleteProduct /></AdminRoute>} />
+        <Route path="/admin/update-product/:id" element={<AdminRoute><UpdateProduct /></AdminRoute>} />
+        <Route path="/admin/products-by-type/:type" element={<AdminRoute><ProductByType /></AdminRoute>} />
+        <Route path="/admin/product-sales" element={<AdminRoute><ProductSales /></AdminRoute>} />
+        <Route path="/admin/users" element={<AdminRoute><ViewUsers /></AdminRoute>} />
+=======
+
+>>>>>>> 201db31fa0f6c257f3728137b46ecaed5e7d6a86
       </Routes>
     </Router>
   );

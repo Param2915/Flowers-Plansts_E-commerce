@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import { toast, ToastContainer } from 'react-toastify';
+import { useAdmin } from '../../context/AdminContext';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +13,7 @@ axios.defaults.baseURL = 'http://localhost:5000';
 /* -------------------------------------------------- */
 const Login = () => {
   const { login } = useAuth();
+  const { loginAdmin } = useAdmin();
   const navigate = useNavigate();
 
   /* ---------- local state ---------- */
@@ -26,11 +29,27 @@ const Login = () => {
   /* ================ LOGIN ================ */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isSubmitting) return; // Prevent multiple submissions
-    
-    setIsSubmitting(true);
-    
     try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password,
+      });
+
+      // Set user and token in context
+      login(response.data.user, response.data.token);
+
+      if (response.data.user.isAdmin) {
+        // If admin, login via admin context
+        loginAdmin();
+        toast.success("Welcome Admin!");
+        navigate("/admin/dashboard");
+      } else {
+        toast.success(`Welcome, ${response.data.user.name}`);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error('Login failed:', error.response?.data?.message || error.message);
+      toast.error('Invalid credentials. Please try again.');
       const { data } = await axios.post('/api/auth/login', { email, password });
 
       /* ---- persist ---- */
@@ -50,6 +69,13 @@ const Login = () => {
   /* ============ PASSWORD‑RESET FLOW ============ */
   const sendOtp = async () => {
     try {
+      await axios.post('http://localhost:5000/api/auth/forgotPassword', {
+        email: resetEmail,
+      });
+      toast.success('OTP sent to your email.');
+      setStep(2);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error sending OTP');
       await axios.post('/api/auth/forgot-password', { email: resetEmail });
       toast.success('OTP sent to your email');
       setStep(2);
@@ -60,6 +86,14 @@ const Login = () => {
 
   const verifyOtp = async () => {
     try {
+      await axios.post('http://localhost:5000/api/auth/verifyOTP', {
+        email: resetEmail,
+        otp,
+      });
+      toast.success('OTP verified. Please set your new password.');
+      setStep(3);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Invalid or expired OTP');
       await axios.post('/api/auth/verify-otp', { email: resetEmail, otp });
       toast.success('OTP verified, set a new password');
       setStep(3);
@@ -75,6 +109,13 @@ const Login = () => {
         otp,
         newPassword,
       });
+      toast.success('Password reset successful. You can now log in.');
+      setShowForgotModal(false);
+      setStep(1);
+      setOtp('');
+      setNewPassword('');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to reset password');
       toast.success('Password reset successful. Please log in.');
       /* clear + close */
       setShowModal(false);
