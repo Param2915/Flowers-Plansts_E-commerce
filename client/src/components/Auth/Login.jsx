@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import { toast, ToastContainer } from 'react-toastify';
+import { useAdmin } from '../../context/AdminContext';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
+  const { loginAdmin } = useAdmin();
+  const navigate = useNavigate();
 
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [step, setStep] = useState(1);
@@ -23,11 +27,22 @@ const Login = () => {
         email,
         password,
       });
+
+      // Set user and token in context
       login(response.data.user, response.data.token);
-      alert('Login successful!');
-      } catch (error) {
+
+      if (response.data.user.isAdmin) {
+        // If admin, login via admin context
+        loginAdmin();
+        toast.success("Welcome Admin!");
+        navigate("/admin/dashboard");
+      } else {
+        toast.success(`Welcome, ${response.data.user.name}`);
+        navigate("/");
+      }
+    } catch (error) {
       console.error('Login failed:', error.response?.data?.message || error.message);
-      alert('Invalid credentials. Please try again.');
+      toast.error('Invalid credentials. Please try again.');
     }
   };
 
@@ -36,10 +51,10 @@ const Login = () => {
       await axios.post('http://localhost:5000/api/auth/forgotPassword', {
         email: resetEmail,
       });
-      alert('OTP sent to your email.');
+      toast.success('OTP sent to your email.');
       setStep(2);
     } catch (error) {
-      alert(error.response?.data?.message || 'Error sending OTP');
+      toast.error(error.response?.data?.message || 'Error sending OTP');
     }
   };
 
@@ -49,10 +64,10 @@ const Login = () => {
         email: resetEmail,
         otp,
       });
-      alert('OTP verified. Please set your new password.');
+      toast.success('OTP verified. Please set your new password.');
       setStep(3);
     } catch (error) {
-      alert(error.response?.data?.message || 'Invalid or expired OTP');
+      toast.error(error.response?.data?.message || 'Invalid or expired OTP');
     }
   };
 
@@ -63,13 +78,13 @@ const Login = () => {
         otp,
         newPassword,
       });
-      alert('Password reset successful. You can now log in.');
+      toast.success('Password reset successful. You can now log in.');
       setShowForgotModal(false);
       setStep(1);
       setOtp('');
       setNewPassword('');
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to reset password');
+      toast.error(error.response?.data?.message || 'Failed to reset password');
     }
   };
 
@@ -149,8 +164,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-

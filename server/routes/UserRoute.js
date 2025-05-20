@@ -3,9 +3,6 @@ const router = express.Router();
 
 const {
   signupUser,
-  loginUser,
-  getCurrentUser,
-  logoutUser,
   addProductToCart,
   getShoppingCart,
   deleteShoppingCart,
@@ -15,12 +12,18 @@ const {
 } = require("../controller/UserController");
 
 const {
+  login: loginUser,
+  logout: logoutUser,
+  getCurrentUser,
+} = require("../controller/authController");
+
+const {
   forgotPassword,
   verifyOTP,
   resetPassword,
 } = require("../controller/PasswordController");
 
-const { verifyToken, requireAdmin } = require("../middleware/AuthMiddleware");  // updated imports
+const { verifyToken, requireAdmin } = require("../middleware/AuthMiddleware");
 
 // Auth Routes
 router.post("/signup", signupUser);

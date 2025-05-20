@@ -9,18 +9,23 @@ import CartPage from './pages/Cartpage';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { AdminProvider } from './context/AdminContext';
 import './styles.css';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // ✅ Import Admin Components
-import AdminLogin from './components/Admin/AdminLogin';
 import Dashboard from './components/Admin/Dashboard';
 import AddProduct from './components/Admin/AddProduct';
 import AllProducts from './components/Admin/AllProducts';
 import EditProduct from './components/Admin/EditProduct';
 import AdminRoute from './components/Admin/AdminRoute';
+import DeleteProduct from './components/Admin/DeleteProduct';
+import UpdateProduct from './components/Admin/UpdateProduct';
+import ProductByType from './components/Admin/ProductByType';
+import ProductSales from './components/Admin/ProductSales';
+import ViewUsers from './components/Admin/ViewUsers';
 
 const App = () => {
   const { user } = useAuth();
@@ -74,11 +79,15 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
 
         {/* 🔐 Admin Panel Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
         <Route path="/admin/add-product" element={<AdminRoute><AddProduct /></AdminRoute>} />
         <Route path="/admin/products" element={<AdminRoute><AllProducts /></AdminRoute>} />
         <Route path="/admin/edit-product/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
+        <Route path="/admin/delete-product/:id" element={<AdminRoute><DeleteProduct /></AdminRoute>} />
+        <Route path="/admin/update-product/:id" element={<AdminRoute><UpdateProduct /></AdminRoute>} />
+        <Route path="/admin/products-by-type/:type" element={<AdminRoute><ProductByType /></AdminRoute>} />
+        <Route path="/admin/product-sales" element={<AdminRoute><ProductSales /></AdminRoute>} />
+        <Route path="/admin/users" element={<AdminRoute><ViewUsers /></AdminRoute>} />
       </Routes>
     </Router>
   );
@@ -86,7 +95,9 @@ const App = () => {
 
 const MainApp = () => (
   <AuthProvider>
-    <App />
+    <AdminProvider>
+      <App />
+    </AdminProvider>
   </AuthProvider>
 );
 
