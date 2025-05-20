@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Auth.css'; // make sure this file exists
+import './Auth.css'; 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -19,10 +22,10 @@ const Signup = () => {
         email,
         password,
       });
-      alert('Signup successful!');
+      toast.success('Signup successful!');
     } catch (error) {
       console.error(error);
-      alert('Signup failed. Please try again.');
+      toast.error('Signup failed. Please try again.');
     }
   };
 

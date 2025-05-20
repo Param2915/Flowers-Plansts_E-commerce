@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
-
 const {
   signupUser,
-  addProductToCart,
+  loginUser,
+  logoutUser,
+  getCurrentUser,
+  addOrUpdateCartItem,
   getShoppingCart,
-  deleteShoppingCart,
+  decrementCartItem,
+  clearCart,
   getItemNumber,
   addToFavorites,
   getFavorites,
@@ -25,27 +28,28 @@ const {
 
 const { verifyToken, requireAdmin } = require("../middleware/AuthMiddleware");
 
-// Auth Routes
+/* ---------- AUTH ---------- */
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
-// Current user (admin-only)
-router.get("/getcurrent", verifyToken, requireAdmin, getCurrentUser);
+/* ---------- USER ---------- */
+router.get("/current", verifyToken, requireAdmin, getCurrentUser);
 
-// Password reset routes
-router.post("/forgotPassword", forgotPassword);
-router.post("/verifyOTP", verifyOTP);
-router.post("/resetPassword", resetPassword);
+/* ---------- PASSWORD ---------- */
+router.post("/forgot-password", forgotPassword);
+router.post("/verify-otp", verifyOTP);
+router.post("/reset-password", resetPassword);
 
-// Shopping Cart Routes
-router.post("/addproduct", verifyToken, addProductToCart);
-router.get("/getshoppingcart", verifyToken, getShoppingCart);
-router.get("/getitemnumber", verifyToken, getItemNumber);
-router.delete("/deleteshoppingcart", verifyToken, deleteShoppingCart);
+/* ---------- CART ---------- */
+router.post("/cart", verifyToken, addOrUpdateCartItem);          // add/increment
+router.get("/getcart", verifyToken, getShoppingCart);               // list
+router.patch("/cart/decrement", verifyToken, decrementCartItem); // decrement / remove
+router.delete("/cart", verifyToken, clearCart);                  // clear all
+router.get("/cart/count", verifyToken, getItemNumber);           // badge count
 
-// Favorites Routes
-router.post("/addtofavorites", verifyToken, addToFavorites);
-router.get("/getfavorites", verifyToken, getFavorites);
+/* ---------- FAVORITES ---------- */
+router.post("/favorites", verifyToken, addToFavorites);
+router.get("/favorites", verifyToken, getFavorites);
 
 module.exports = router;
