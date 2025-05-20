@@ -12,6 +12,7 @@ const {
   getItemNumber,
   addToFavorites,
   getFavorites,
+  getAllProducts /////////////////////////
 } = require("../controller/UserController");
 
 const {
@@ -46,4 +47,12 @@ router.get("/cart/count", verifyToken, getItemNumber);           // badge count
 router.post("/favorites", verifyToken, addToFavorites);
 router.get("/favorites", verifyToken, getFavorites);
 
-module.exports = router;
+
+
+
+router.get('/', getAllProducts); // This route will now handle search and sort
+
+
+
+
+module.exports = router;  

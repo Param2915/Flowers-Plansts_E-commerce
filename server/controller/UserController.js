@@ -176,8 +176,12 @@ const getShoppingCart = async (req, res) => {
   }
 };
 
+
+
+
+
 const decrementCartItem = async (req, res) => {
-  const { cart_item_id } = req.body;
+  const { cart_item_id, remove } = req.body;
   const user_id = req.user.id;
 
   const t = await sequelize.transaction();
@@ -193,10 +197,12 @@ const decrementCartItem = async (req, res) => {
       return res.status(404).json({ message: "Cart item not found." });
     }
 
-    if (item.quantity > 1) {
-      await item.decrement("quantity", { transaction: t });
-    } else {
+    // If remove flag is true or quantity is 1, remove the item completely
+    if (remove || item.quantity <= 1) {
       await item.destroy({ transaction: t });
+    } else {
+      // Otherwise just decrement by 1
+      await item.decrement("quantity", { transaction: t });
     }
 
     // Get updated cart for response
@@ -225,6 +231,9 @@ const decrementCartItem = async (req, res) => {
     return res.status(500).json({ message: "Unable to update cart at this time." });
   }
 };
+
+
+
 
 const clearCart = async (req, res) => {
   const user_id = req.user.id;
@@ -288,6 +297,65 @@ const getFavorites = async (req, res) => {
   }
 };
 
+
+
+const getAllProducts = async (req, res) => {
+  try {
+    console.log('Backend received request with query:', req.query);
+    const { search, sort } = req.query;
+    
+    // Build query based on search term
+    let query = {};
+    if (search) {
+      query = {
+        [Op.or]: [
+          { name: { [Op.like]: `%${search}%` } },
+          { description: { [Op.like]: `%${search}%` } },
+          { category: { [Op.like]: `%${search}%` } }
+        ]
+      };
+    }
+    
+    // Log the constructed query for debugging
+    console.log('Constructed database query:', query);
+    
+    // Define sort options
+    let order = [];
+    switch (sort) {
+      case 'price-low-high':
+        order = [['price', 'ASC']];
+        break;
+      case 'price-high-low':
+        order = [['price', 'DESC']];
+        break;
+      case 'a-z':
+        order = [['name', 'ASC']];
+        break;
+      case 'z-a':
+        order = [['name', 'DESC']];
+        break;
+      default:
+        order = [['id', 'DESC']];
+    }
+    
+    console.log('Sort order:', order);
+    
+    // Execute the query
+    const products = await Product.findAll({
+      where: query,
+      order: order
+    });
+    
+    console.log(`Found ${products.length} products`);
+    
+    return res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return res.status(500).json({ message: 'Server error', error: error.toString() });
+  }
+};
+
+
 /* ------------------------------------------------------------------ */
 module.exports = {
   signupUser,
@@ -301,4 +369,5 @@ module.exports = {
   getItemNumber,
   addToFavorites,
   getFavorites,
+  getAllProducts ///////////////////////////
 };
