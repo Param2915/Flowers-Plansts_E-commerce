@@ -91,6 +91,7 @@ exports.getProductsByType = async (req, res) => {
   }
 };
 
+
 exports.getProductSales = async (req, res) => {
   try {
     const sales = await CartItem.findAll({
@@ -125,21 +126,6 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-exports.getProductsByType = async (req, res) => {
-  try {
-    const { type } = req.params;
-
-    const products = await Product.findAll({ where: { type } });
-
-    if (products.length === 0) {
-      return res.status(404).json({ message: `No products found for type: ${type}` });
-    }
-
-    return res.status(200).json({ type, products });
-  } catch (err) {
-    return res.status(500).json({ message: "Failed to fetch products by type", error: err });
-  }
-};
 
 exports.getProductSales = async (req, res) => {
   try {
