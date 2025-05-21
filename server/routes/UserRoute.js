@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   signupUser,
-  loginUser,
-  logoutUser,
+
   getCurrentUser,
   addOrUpdateCartItem,
   getShoppingCart,
@@ -18,7 +17,7 @@ const {
 const {
   login: loginUser,
   logout: logoutUser,
-  getCurrentUser,
+  
 } = require("../controller/authController");
 
 const {

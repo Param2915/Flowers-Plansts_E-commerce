@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/upload");
 
 const {
   getProducts,
@@ -7,33 +8,17 @@ const {
   addProduct,
   updateProduct,
   deleteProduct,
-  removeFavorite,
-  addFavorite,
-  addToCart,
-  getShoppingCart,
-  updateCartQuantity,
-  deleteCartItem,
 } = require("../controller/ProductController");
 
-const { verifyToken, requireAdmin } = require("../middleware/AuthMiddleware"); // updated imports
+const { verifyToken, requireAdmin } = require("../middleware/AuthMiddleware");
 
 // Public product routes
 router.get("/", getProducts);
 router.get("/:id", getSingleProduct);
 
-// Favorites
-router.delete("/removefavorite", verifyToken, removeFavorite);
-router.post("/favorite/add", verifyToken, addFavorite);
-
-// Cart routes - require authentication
-router.post("/cart/add", verifyToken, addToCart);
-router.get("/cart", verifyToken, getShoppingCart);             // Get all cart items for logged-in user
-router.put("/cart/update", verifyToken, updateCartQuantity);   // Update quantity for cart item
-router.delete("/cart/delete", verifyToken, deleteCartItem);    // Delete cart item
-
-// Admin only routes
-router.post("/add", verifyToken, requireAdmin, addProduct);
-router.put("/:id", verifyToken, requireAdmin, updateProduct);
+// Admin routes (use multer to parse form data)
+router.post("/add", verifyToken, requireAdmin, upload.single("image"), addProduct);
+router.put("/:id", verifyToken, requireAdmin, upload.single("image"), updateProduct);
 router.delete("/:id", verifyToken, requireAdmin, deleteProduct);
 
 module.exports = router;

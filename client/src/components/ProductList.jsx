@@ -1,7 +1,7 @@
 import React from 'react';
 import Product from './Product';
 
-const ProductList = ({ products, addToCart }) => {
+const ProductList = ({ products = [], addToCart }) => {
   return (
     <div className="row"> 
       {products.length === 0 ? (

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import './DeleteProduct.css';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DeleteProduct = () => {
   const [productId, setProductId] = useState("");
@@ -10,7 +11,7 @@ const DeleteProduct = () => {
     axios.delete(`/api/admin/delete-product/${productId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-    .then(() => alert("Product deleted"))
+    .then(() => toast.succes("Product deleted"))
     .catch(err => console.error(err));
   };
 

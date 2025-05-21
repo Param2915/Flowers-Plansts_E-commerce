@@ -2,7 +2,7 @@ const sequelize = require("../config/db");
 const User = require("../models/User");
 const Product = require("../models/Product");
 const CartItem = require("../models/CartItem");
-const sequelize = require("../config/db");
+
 
 
 exports.getDashboard = async (req, res) => {

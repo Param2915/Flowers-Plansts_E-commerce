@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Product = require("../models/Product");
 const CartItem = require("../models/CartItem");
@@ -14,15 +15,13 @@ const sequelize = require("../config/db");
 const signupUser = async (req, res) => {
   const { name, surname, phone, email, password } = req.body;
 
-  if (!name || !surname || !phone || !email || !password) {
-    return res.status(400).json({ message: "Provide all fields" });
-  }
+  if (!name || !surname || !phone || !email || !password)
+    return res.status(400).json({ message: "Please provide all fields." });
 
   try {
-    const userExists = await User.findOne({ where: { email } });
-    if (userExists) {
-      return res.status(400).json({ message: "User or email already exists" });
-    }
+    const exists = await User.findOne({ where: { email } });
+    if (exists)
+      return res.status(400).json({ message: "Email already registered." });
 
     const hashPW = await bcrypt.hash(password, 10);
     await User.create({ name, surname, phone, email, password: hashPW });
@@ -152,19 +151,9 @@ const addOrUpdateCartItem = async (req, res) => {
     }
     
     return res.status(500).json({ message: "Unable to update cart at this time." });
-// ADD PRODUCT TO CART
-const addProductToCart = async (req, res) => {
-  const { user_id, product_id, arrangement, price } = req.body;
-
-  try {
-    await ShoppingCartItem.create({ user_id, product_id, arrangement, price });
-    return res.status(200).json({ message: "Product added to cart" });
-  } catch (error) {
-    return res.status(500).json({ message: "Database error", error });
   }
 };
 
-// GET SHOPPING CART
 const getShoppingCart = async (req, res) => {
   const user_id = req.user.id;
 
@@ -262,7 +251,6 @@ const clearCart = async (req, res) => {
   }
 };
 
-// GET ITEM COUNT
 const getItemNumber = async (req, res) => {
   try {
     const count = await CartItem.sum("quantity", {
@@ -294,7 +282,6 @@ const addToFavorites = async (req, res) => {
   }
 };
 
-// GET FAVORITES
 const getFavorites = async (req, res) => {
   const user_id = req.user.id;
 
@@ -314,59 +301,51 @@ const getFavorites = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
-    console.log('Backend received request with query:', req.query);
     const { search, sort } = req.query;
-    
-    // Build query based on search term
+
+    // Build search query
     let query = {};
     if (search) {
       query = {
         [Op.or]: [
           { name: { [Op.like]: `%${search}%` } },
           { description: { [Op.like]: `%${search}%` } },
-          { category: { [Op.like]: `%${search}%` } }
-        ]
+          { type: { [Op.like]: `%${search}%` } }, // ✅ Fixed this line
+        ],
       };
     }
-    
-    // Log the constructed query for debugging
-    console.log('Constructed database query:', query);
-    
-    // Define sort options
+
+    // Sort logic
     let order = [];
     switch (sort) {
-      case 'price-low-high':
-        order = [['price', 'ASC']];
+      case "price-low-high":
+        order = [["price", "ASC"]];
         break;
-      case 'price-high-low':
-        order = [['price', 'DESC']];
+      case "price-high-low":
+        order = [["price", "DESC"]];
         break;
-      case 'a-z':
-        order = [['name', 'ASC']];
+      case "a-z":
+        order = [["name", "ASC"]];
         break;
-      case 'z-a':
-        order = [['name', 'DESC']];
+      case "z-a":
+        order = [["name", "DESC"]];
         break;
       default:
-        order = [['id', 'DESC']];
+        order = [["id", "DESC"]];
     }
-    
-    console.log('Sort order:', order);
-    
-    // Execute the query
+
     const products = await Product.findAll({
       where: query,
-      order: order
+      order,
     });
-    
-    console.log(`Found ${products.length} products`);
-    
+
     return res.status(200).json(products);
   } catch (error) {
-    console.error('Error fetching products:', error);
-    return res.status(500).json({ message: 'Server error', error: error.toString() });
+    console.error("Error fetching products:", error);
+    return res.status(500).json({ message: "Server error", error });
   }
 };
+
 
 
 /* ------------------------------------------------------------------ */
