@@ -12,9 +12,13 @@ const ProductRoute  = require("./routes/ProductRoute");   // Product-related rou
 const RecommendRoute= require("./routes/RecommendRoute"); // Recommendation Model
 const ContactRoute  = require("./routes/contactRoutes");  // Contact form routes
 const AdminRoutes   = require("./routes/adminRoutes");    // ← New: Admin panel routes
+const paymentRoute = require('./routes/paymentRoute');
+
 
 // Load environment variables
 dotenv.config({ path: "./config/.env" });
+require('dotenv').config();
+
 
 // CORS & JSON parsing
 app.use(
@@ -35,6 +39,7 @@ app.use("/api/products",  ProductRoute);
 app.use("/api",           RecommendRoute);
 app.use("/api/contact",   ContactRoute);
 app.use("/api/admin",     AdminRoutes);  // ← Admin routes (login, dashboard, users, product CRUD)
+app.use('/api/payment', paymentRoute);
 
 // Start server
 const PORT = process.env.PORT || 5000;
