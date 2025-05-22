@@ -11,7 +11,7 @@ const AddProduct = () => {
     name: '',
     description: '',
     price: '',
-    image: null,
+    image: '',  // Changed to string instead of null
     arrangement: '',
     color: '',
     type: '',
@@ -22,23 +22,48 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    for (const key in product) {
-      formData.append(key, product[key]);
+    // Validate required fields
+    if (!product.name || !product.description || !product.price || !product.type || !product.image) {
+      toast.error('Please fill in all required fields');
+      return;
     }
 
     try {
-      await axios.post('http://localhost:5000/api/products/add', formData, {
+      // Send as JSON, not FormData, since your backend expects req.body
+      await axios.post('http://localhost:5000/api/admin/add-product', {
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        arrangement: product.arrangement,
+        color: product.color,
+        type: product.type,
+        image: product.image
+      }, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',  // Changed from multipart/form-data
           Authorization: `Bearer ${localStorage.getItem('adminToken')}`,
         },
       });
-      toast.success('Product Added!');
-      navigate('/admin/products');
+      
+      toast.success('Product Added Successfully!');
+      
+      // Reset form
+      setProduct({
+        name: '',
+        description: '',
+        price: '',
+        image: '',
+        arrangement: '',
+        color: '',
+        type: '',
+      });
+      
+      setTimeout(() => {
+        navigate('/admin/products');
+      }, 2000);
     } catch (err) {
-      console.error(err.response?.data || err.message);
-      toast.error('Error adding product');
+      console.error('Error adding product:', err.response?.data || err.message);
+      toast.error(err.response?.data?.message || 'Error adding product');
     }
   };
 
@@ -48,13 +73,54 @@ const AddProduct = () => {
       <div className="add-product-card">
         <h2><FiPlusCircle className="product-icon" /> Add New Product</h2>
         <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="Name" value={product.name} onChange={(e) => setProduct({...product, name: e.target.value})} required />
-          <textarea placeholder="Description" value={product.description} onChange={(e) => setProduct({...product, description: e.target.value})} required />
-          <input type="number" placeholder="Price" value={product.price} onChange={(e) => setProduct({...product, price: e.target.value})} required />
-          <input type="text" placeholder="Arrangement (e.g., bouquet, pot)" value={product.arrangement} onChange={(e) => setProduct({...product, arrangement: e.target.value})} required />
-          <input type="text" placeholder="Color (e.g., red, white)" value={product.color} onChange={(e) => setProduct({...product, color: e.target.value})} required />
-          <input type="text" placeholder="Type (e.g., flower, plant)" value={product.type} onChange={(e) => setProduct({...product, type: e.target.value})} required />
-          <input type="file" onChange={(e) => setProduct({...product, image: e.target.files[0]})} required />
+          <input 
+            type="text" 
+            placeholder="Name" 
+            value={product.name} 
+            onChange={(e) => setProduct({...product, name: e.target.value})} 
+            required 
+          />
+          <textarea 
+            placeholder="Description" 
+            value={product.description} 
+            onChange={(e) => setProduct({...product, description: e.target.value})} 
+            required 
+          />
+          <input 
+            type="number" 
+            placeholder="Price" 
+            value={product.price} 
+            onChange={(e) => setProduct({...product, price: e.target.value})} 
+            required 
+            min="0"
+            step="0.01"
+          />
+          <input 
+            type="text" 
+            placeholder="Arrangement (e.g., bouquet, pot)" 
+            value={product.arrangement} 
+            onChange={(e) => setProduct({...product, arrangement: e.target.value})} 
+          />
+          <input 
+            type="text" 
+            placeholder="Color (e.g., red, white)" 
+            value={product.color} 
+            onChange={(e) => setProduct({...product, color: e.target.value})} 
+          />
+          <input 
+            type="text" 
+            placeholder="Type (e.g., flower, plant)" 
+            value={product.type} 
+            onChange={(e) => setProduct({...product, type: e.target.value})} 
+            required 
+          />
+          <input 
+            type="text" 
+            placeholder="Image path (e.g., uploads/image.jpg)" 
+            value={product.image} 
+            onChange={(e) => setProduct({...product, image: e.target.value})} 
+            required 
+          />
           <button type="submit">Add Product</button>
         </form>
       </div>
@@ -63,7 +129,6 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
-
 
 
 

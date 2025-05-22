@@ -5,6 +5,33 @@ const CartItem = require("../models/CartItem");
 
 
 
+
+exports.getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const product = await Product.findByPk(id);
+    
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    
+    return res.status(200).json({ 
+      message: "Product found", 
+      product: product 
+    });
+  } catch (err) {
+    console.error('Error fetching product:', err);
+    return res.status(500).json({ 
+      message: "Failed to fetch product", 
+      error: err 
+    });
+  }
+};
+
+
+
+
 exports.getDashboard = async (req, res) => {
   try {
     return res.status(200).json({
@@ -31,6 +58,39 @@ exports.getAllUsers = async (req, res) => {
     return res.status(500).json({ message: "Failed to fetch users", error: err });
   }
 };
+
+
+
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    // Check if user exists
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // Prevent admin from deleting themselves
+    if (user.id === req.user.id) {
+      return res.status(400).json({ message: "You cannot delete your own account" });
+    }
+    
+    // Delete the user
+    await User.destroy({
+      where: { id: userId }
+    });
+    
+    return res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Delete user error:", err);
+    return res.status(500).json({ message: "Failed to delete user", error: err.message });
+  }
+};
+
+
+
 
 exports.addProduct = async (req, res) => {
   try {

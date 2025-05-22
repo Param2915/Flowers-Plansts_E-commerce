@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 const User = require("../models/User");
 const PasswordResetToken = require("../models/PasswordResetToken");
 
-dotenv.config();
+dotenv.config({ path: './config/.env' });
 
 // Use a static email and password instead of DB config (adjust this if needed)
 require("dotenv").config();
@@ -38,7 +38,7 @@ const forgotPassword = async (req, res) => {
     await PasswordResetToken.upsert({ email, otp, expires_at: expiresAt });
 
     await transporter.sendMail({
-      from: ADMIN_EMAIL,
+      from: process.env.ADMIN_EMAIL,
       to: email,
       subject: "Password Reset OTP",
       text: `Your OTP for password reset is: ${otp}. It will expire in 10 minutes.`,

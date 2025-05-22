@@ -10,32 +10,15 @@ const { verifyToken, requireAdmin } = require("../middleware/AuthMiddleware");
 router.post("/login", login);
 
 // ── PROTECTED ──
-// All of these require a valid JWT AND user.role === 'admin'
 router.get("/dashboard", verifyToken, requireAdmin, AdminController.getDashboard);
 router.get("/users", verifyToken, requireAdmin, AdminController.getAllUsers);
+router.delete("/users/:userId", verifyToken, requireAdmin, AdminController.deleteUser);
 router.post("/add-product", verifyToken, requireAdmin, AdminController.addProduct);
+router.get("/product/:id", verifyToken, requireAdmin, AdminController.getProductById);
 router.delete("/delete-product/:id", verifyToken, requireAdmin, AdminController.deleteProduct);
-router.put(
-  "/update-product/:id",
-  verifyToken,
-  requireAdmin,
-  AdminController.updateProduct
-);
-// Get Products by Type (fixed: make sure AdminController has this method)
-router.get(
-  "/products-by-type/:type",
-  verifyToken,
-  requireAdmin,
-  AdminController.getProductsByType
-);
-
-// Get Overall Product Sales
-router.get(
-  "/product-sales",
-  verifyToken,
-  requireAdmin,
-  AdminController.getProductSales
-);
+router.put("/update-product/:id", verifyToken, requireAdmin, AdminController.updateProduct);
+router.get("/products-by-type/:type", verifyToken, requireAdmin, AdminController.getProductsByType);// Get Products by Type
+router.get("/product-sales", verifyToken, requireAdmin, AdminController.getProductSales); // Get Overall Product Sales
 
 
 module.exports = router;

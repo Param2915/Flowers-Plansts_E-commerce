@@ -1,1 +1,197 @@
-@import './Dashboard.css';
+/* ViewUsers.css */
+
+.users-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.users-header h2 {
+  color: #d4896b;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.refresh-btn {
+  background-color: #d4896b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.refresh-btn:hover {
+  background-color: #c17a5e;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f5c6cb;
+}
+
+.close-error {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #721c24;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.close-error:hover {
+  background-color: rgba(114, 28, 36, 0.1);
+}
+
+.no-users {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.users-list {
+  display: grid;
+  gap: 15px;
+}
+
+.user-item {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.user-item:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #d4896b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #c82333;
+  transform: translateY(-1px);
+}
+
+.delete-btn:disabled,
+.delete-btn.deleting {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.delete-btn.deleting {
+  opacity: 0.7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .users-container {
+    padding: 10px;
+  }
+  
+  .users-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .users-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .user-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .delete-btn {
+    align-self: stretch;
+    width: 100%;
+  }
+}
